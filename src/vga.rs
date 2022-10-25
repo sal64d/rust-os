@@ -143,3 +143,26 @@ pub fn _print(args: fmt::Arguments) {
     use core::fmt::Write;
     WRITER.lock().write_fmt(args).unwrap();
 }
+
+#[test_case]
+fn test_println_simple() {
+    println!("test_println_simple_output");
+}
+
+#[test_case]
+fn test_println_many() {
+    for i in 0..200 {
+        println!("Print this line {} times", i);
+    }
+}
+
+#[test_case]
+fn test_println_output(){
+    let s = "Some random string that fits into a single line";
+    println!("{}", s);
+
+    for (i,c) in s.bytes().enumerate() {
+        let b = WRITER.lock().buffer.chars[BUFFER_HEIGHT-2][i].read();
+        assert_eq!(c,b.ascii_char);
+    }
+}
